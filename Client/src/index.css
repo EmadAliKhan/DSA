@@ -1,0 +1,105 @@
+* {
+  margin: 0%;
+  padding: 0;
+  box-sizing: border-box;
+}
+body {
+  cursor: pointer;
+}
+.dancing-script {
+  font-family: "Dancing Script", cursive;
+  font-optical-sizing: auto;
+  font-weight: 700;
+  font-style: normal;
+}
+.jacques-francois-shadow-regular {
+  font-family: "Jacques Francois Shadow", serif;
+  font-weight: 600;
+  font-style: normal;
+}
+.playfair-display {
+  font-family: "Playfair Display", serif;
+  font-optical-sizing: auto;
+  font-weight: bolder;
+  font-style: normal;
+}
+
+/* calender */
+.calendar {
+  width: 320px;
+  margin: 20px auto;
+  border: 1.5px solid #ccc;
+  border-radius: 10px;
+  overflow: hidden;
+  padding-bottom: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  font-family: "Roboto", sans-serif;
+}
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: black;
+  color: white;
+  padding: 15px;
+  font-size: 30px;
+  font-weight: bold;
+}
+.header button {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 30px;
+  opacity: 0.7;
+  cursor: pointer;
+}
+.day-names,
+.days {
+  display: flex;
+  flex-wrap: wrap;
+}
+.day-name,
+.day,
+.empty-day {
+  width: 14.28%;
+  padding: 10px;
+  border: 2px solid #f0f0f0;
+  box-sizing: border-box;
+  text-align: center;
+  font-size: 15px;
+  opacity: 0.7;
+  border-radius: 5px;
+}
+.day-name {
+  background-color: #f0f0f06f;
+  font-size: 17px;
+  font-weight: bold;
+  color: black;
+  opacity: 0.5;
+  margin-bottom: 8px;
+}
+.day {
+  border: 2px solid #f0f0f0;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+.day:hover {
+  background-color: #e0e0e0;
+}
+
+.empty-day {
+  border: 2px solid #f0f0f0;
+  background-color: #f9f9f9;
+}
+.today {
+  background-color: green;
+  color: white;
+  border-radius: 5px;
+  text-align: center;
+}
+.selected {
+  background-color: green;
+  color: white;
+  border-radius: 5px;
+  text-align: center;
+}

@@ -5,10 +5,20 @@ import { ApiError } from "../utils/ApiError.js";
 import { asyncHandler } from "../utils/AsyncHandler.js";
 //Society Lead Generate the request
 const SocietyRequest = asyncHandler(async (req, res) => {
-  const { SocietyName, LeadName, EventName, EventDate, Location } = req.body;
+  const { SocietyName, LeadName, EventName, Department, EventDate, Location } =
+    req.body;
 
   try {
-    if (!(SocietyName && LeadName && EventName && EventDate && Location)) {
+    if (
+      !(
+        SocietyName &&
+        LeadName &&
+        EventName &&
+        EventDate &&
+        Location &&
+        Department
+      )
+    ) {
       throw new ApiError(400, "All fields are required for Request..");
     }
 
@@ -17,6 +27,7 @@ const SocietyRequest = asyncHandler(async (req, res) => {
       LeadName,
       EventName,
       EventDate,
+      Department,
       Location,
     });
 

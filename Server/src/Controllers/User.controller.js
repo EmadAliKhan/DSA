@@ -5,7 +5,7 @@ import { asyncHandler } from "../utils/AsyncHandler.js";
 import jwt from "jsonwebtoken";
 const RegisterUser = asyncHandler(async (req, res) => {
   // Getting user detail from frontend
-  const { fullName, email, password } = req.body;
+  const { fullName, email, password, Department } = req.body;
 
   //checking if user already exists
   const existedUser = await User.findOne({
@@ -24,10 +24,11 @@ const RegisterUser = asyncHandler(async (req, res) => {
     fullName,
     email,
     password,
+    Department,
   });
 
   const token = await jwt.sign(
-    { id: user._id, firstName, lastName, email },
+    { id: user._id, firstName, lastName, email, Department },
     "jsonwebtokentkey",
     {
       expiresIn: "30d",

@@ -10,6 +10,10 @@ const RequestSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    Department: {
+      type: String,
+      required: true,
+    },
     EventName: {
       type: String,
       required: true,

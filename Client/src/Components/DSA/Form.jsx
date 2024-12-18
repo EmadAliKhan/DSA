@@ -2,7 +2,7 @@ import * as React from "react";
 import TextField from "@mui/material/TextField";
 import Grid from "@mui/material/Grid";
 import { useLocation, useNavigate } from "react-router-dom";
-import { Card, CardContent } from "@mui/material";
+import { Autocomplete, Card, CardContent } from "@mui/material";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import LoginIcon from "@mui/icons-material/Login";
@@ -14,6 +14,7 @@ export default function Form() {
 
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
+  const [department, setDepartment] = React.useState("");
   //   https://images.pexels.com/photos/396547/pexels-photo-396547.jpeg?cs=srgb&dl=pexels-francesco-ungaro-396547.jpg&fm=jpg
   const notifyFieldsError = (error) =>
     toast.error(error, {
@@ -41,18 +42,20 @@ export default function Form() {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    if (!email || !password) {
+    if (!email || !password || !department) {
       notifyFieldsError("🦄 Please fill all The fields!");
     } else {
+      console.log(email, password, department);
+
       // const Data = {
       //   email: email,
       //   password: password,
       // };
-      if (email === "DSA@gmail.com" && password === "12345678") {
-        navigate("/DSAdashboard");
-      } else if (email === "Society@gmail.com" && password === "12345678") {
-        navigate("/Societydashboard");
-      }
+      // if (email === "DSA@gmail.com" && password === "12345678") {
+      //   navigate("/DSAdashboard");
+      // } else if (email === "Society@gmail.com" && password === "12345678") {
+      //   navigate("/Societydashboard");
+      // }
     }
   };
 
@@ -145,6 +148,38 @@ export default function Form() {
                   }}
                 />
               </Grid>
+              <Grid item xs={12}>
+                <Autocomplete
+                  options={["CSE", "EE", "BSCS"]}
+                  renderInput={(params) => (
+                    <TextField
+                      {...params}
+                      label="Department"
+                      variant="outlined"
+                      required
+                      InputLabelProps={{
+                        style: { color: "white" }, // Valid RGB values
+                      }}
+                      sx={{
+                        "& .MuiOutlinedInput-root": {
+                          "& fieldset": {
+                            borderColor: "white", // Change border color to white
+                          },
+                          "&:hover fieldset": {
+                            borderColor: "white",
+                          },
+                          "&.Mui-focused fieldset": {
+                            borderColor: "white",
+                          },
+                        },
+                        input: { color: "white" }, // Change input text color to white
+                      }}
+                    />
+                  )}
+                  onChange={(event, value) => setDepartment(value)}
+                />
+              </Grid>
+              {/* button */}
               <Grid
                 xs={12}
                 marginTop={2}

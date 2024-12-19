@@ -78,35 +78,6 @@ const RequestForm = () => {
             <form onSubmit={handleSubmit(onSubmitHandler)}>
               <Grid container spacing={1.5}>
                 {/* Society Name */}
-                {/* <Grid item xs={12} sm={6}>
-                  <TextField
-                    required
-                    label="Society Name"
-                    {...register("SocietyName")}
-                    placeholder="Society"
-                    variant="outlined"
-                    fullWidth
-                    type="String"
-                    InputLabelProps={{
-                      style: { color: "white" },
-                    }}
-                    sx={{
-                      "& .MuiOutlinedInput-root": {
-                        borderRadius: "20px",
-                        "& fieldset": {
-                          borderColor: " white",
-                        },
-                        "&:hover fieldset": {
-                          borderColor: " white",
-                        },
-                        "&.Mui-focused fieldset": {
-                          borderColor: " white",
-                        },
-                      },
-                      input: { color: "white" },
-                    }}
-                  />
-                </Grid> */}
                 <Grid item xs={12} sm={6}>
                   <Autocomplete
                     options={["GDSC", "IEE", "IISE"]}
@@ -235,12 +206,12 @@ const RequestForm = () => {
                   />
                 </Grid>
                 {/* Hall */}
-                <Grid item xs={12}>
-                  <TextField
+                <Grid item xs={6}>
+                  {/* <TextField
                     required
                     label="Hall"
-                    {...register("ConfirmPassword")}
-                    placeholder="confirmPassword"
+                    {...register("hall")}
+                    placeholder="hall"
                     variant="outlined"
                     fullWidth
                     type="String"
@@ -261,6 +232,75 @@ const RequestForm = () => {
                         },
                       },
                       input: { color: "white" },
+                    }}
+                  /> */}
+                  <Autocomplete
+                    options={["Auditorium", "Seminar"]}
+                    renderInput={(params) => (
+                      <TextField
+                        {...params}
+                        label="Hall"
+                        variant="outlined"
+                        required
+                        InputLabelProps={{
+                          style: { color: "white" }, // Valid RGB values
+                        }}
+                        sx={{
+                          "& .MuiOutlinedInput-root": {
+                            borderRadius: "20px",
+                            "& fieldset": {
+                              borderColor: " white",
+                            },
+                            "&:hover fieldset": {
+                              borderColor: " white",
+                            },
+                            "&.Mui-focused fieldset": {
+                              borderColor: " white",
+                            },
+                          },
+                          input: { color: "white" },
+                        }}
+                      />
+                    )}
+                    onChange={(event, value) => {
+                      // Handle change and register the selected value
+                      register("hall").onChange({ target: { value } });
+                    }}
+                  />
+                </Grid>
+                {/* Department */}
+                <Grid item xs={6}>
+                  <Autocomplete
+                    options={["CSE", "EE", "BSCS"]}
+                    renderInput={(params) => (
+                      <TextField
+                        {...params}
+                        label="department"
+                        variant="outlined"
+                        required
+                        InputLabelProps={{
+                          style: { color: "white" }, // Valid RGB values
+                        }}
+                        sx={{
+                          "& .MuiOutlinedInput-root": {
+                            borderRadius: "20px",
+                            "& fieldset": {
+                              borderColor: " white",
+                            },
+                            "&:hover fieldset": {
+                              borderColor: " white",
+                            },
+                            "&.Mui-focused fieldset": {
+                              borderColor: " white",
+                            },
+                          },
+                          input: { color: "white" },
+                        }}
+                      />
+                    )}
+                    onChange={(event, value) => {
+                      // Handle change and register the selected value
+                      register("department").onChange({ target: { value } });
                     }}
                   />
                 </Grid>

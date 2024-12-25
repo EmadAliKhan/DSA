@@ -58,9 +58,9 @@ const RegisterUser = asyncHandler(async (req, res) => {
 
 const LoginUser = asyncHandler(async (req, res) => {
   // getting data from frontend
-  const { email, password } = req.body;
+  const { email, password, Department } = req.body;
   //   checking validation
-  if (!email || !password) {
+  if (!email || !password || Department) {
     throw new ApiError(400, "All fields are required...!");
   }
   //Checking for existed  user

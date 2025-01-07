@@ -2,9 +2,28 @@ import mongoose, { Schema } from "mongoose";
 
 const DSASchema = new mongoose.Schema(
   {
-    CharimanData: {
-      type: Schema.Types.ObjectId,
-      ref: "data",
+    SocietyName: {
+      type: String,
+      required: true,
+    },
+    LeadName: {
+      type: String,
+      required: true,
+    },
+    Department: {
+      type: String,
+      required: true,
+    },
+    EventName: {
+      type: String,
+      required: true,
+    },
+    EventDate: {
+      type: Date,
+      required: true,
+    },
+    Location: {
+      type: String,
       required: true,
     },
     status: {

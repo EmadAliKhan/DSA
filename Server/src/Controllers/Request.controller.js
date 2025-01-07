@@ -63,9 +63,16 @@ const ChairmanActionRequest = asyncHandler(async (req, res) => {
     }
     // finding the data from table
     const findRequest = await Request.findOne({ _id: id });
+    console.log(findRequest);
+
     //sending data to the Accepted Reservation
     const sendData = await Data.create({
-      RequestData: findRequest,
+      SocietyName: findRequest.SocietyName,
+      LeadName: findRequest.LeadName,
+      Department: findRequest.Department,
+      EventName: findRequest.EventName,
+      EventDate: findRequest.EventDate,
+      Location: findRequest.Location,
       status: status,
     });
     //now delete from Table
@@ -110,7 +117,12 @@ const DSAActionRequest = asyncHandler(async (req, res) => {
     const findRequest = await Data.findOne({ _id: id });
     //sending data to the Accepted Reservation
     const sendData = await DSA.create({
-      CharimanData: findRequest,
+      SocietyName: findRequest.SocietyName,
+      LeadName: findRequest.LeadName,
+      Department: findRequest.Department,
+      EventName: findRequest.EventName,
+      EventDate: findRequest.EventDate,
+      Location: findRequest.Location,
       status: status,
     });
     return res

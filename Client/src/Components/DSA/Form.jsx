@@ -6,6 +6,7 @@ import { Autocomplete, Card, CardContent } from "@mui/material";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import LoginIcon from "@mui/icons-material/Login";
+import axios from "axios";
 
 export default function Form() {
   const location = useLocation();
@@ -40,24 +41,106 @@ export default function Form() {
       theme: "dark",
     });
 
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-    if (!email || !password || !department) {
-      notifyFieldsError("🦄 Please fill all The fields!");
-    } else {
-      console.log(email, password, department);
-
-      // const Data = {
-      //   email: email,
-      //   password: password,
-      // };
-      // if (email === "DSA@gmail.com" && password === "12345678") {
-      //   navigate("/DSAdashboard");
-      // } else if (email === "Society@gmail.com" && password === "12345678") {
-      //   navigate("/Societydashboard");
-      // }
-    }
-  };
+    // const handleSubmit = async (event) => {
+    //   event.preventDefault();
+    
+    //   // Notify if fields are missing
+    //   if (!email || !password || !department) {
+    //     notifyFieldsError("🦄 Please fill all the fields!");
+    //     return;
+    //   }
+    
+    //   try {
+    //     // Mocking API request for now (Replace with actual API call)
+    //     const response = await fetch("http://localhost:5000/api/v1/login", {
+    //       method: "POST",
+    //       headers: {
+    //         "Content-Type": "application/json",
+    //       },
+    //       body: JSON.stringify({
+    //         email,
+    //         password,
+    //         department,
+    //       }),
+    //     });
+    
+    //     const data = await response.json();
+    
+    //     if (response.ok) {
+    //       // Mock Validation for Login Type
+    //       if (type === "Society") {
+    //         navigate("/Societydashboard");
+    //       } else if (type === "DSA") {
+    //         navigate("/DSAdashboard");
+    //       } else if (type === "Chairman") {
+    //         navigate("/Chairmandashboard");
+    //       } else {
+    //         notifyInvalidError("🦄 Invalid login type!");
+    //       }
+    //     } else {
+    //       notifyInvalidError(data.message || "Invalid credentials!");
+    //     }
+    //   } catch (error) {
+    //     notifyInvalidError("🦄 Login failed. Try again later!");
+    //     console.error(error);
+    //   }
+    // };
+    const handleSubmit = async (event) => {
+      event.preventDefault();
+    
+      if (!email || !password || !department) {
+        notifyFieldsError("🦄 Please fill all the fields!");
+        return;
+      }
+    
+      try {
+        const response = await fetch("http://localhost:5000/api/v1/login", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            email,
+            password,
+            department, // Ensure capitalization matches the backend key
+          }),
+        });
+    
+        if (!response.ok) {
+          const errorResponse = await response.json();
+          console.error("Error Response:", errorResponse); // Log error for debugging
+          notifyInvalidError(errorResponse.message || "Login failed!");
+          return;
+        }
+    
+        const data = await response.json();
+        console.log("Login Successful, Response Data:", data); // Debugging
+    
+        if (data.success && data.data) {
+          // Redirect based on type passed through `location.state`
+          switch (type) {
+            case "Society":
+              navigate("/Societydashboard");
+              break;
+            case "DSA":
+              navigate("/DSAdashboard");
+              break;
+            case "Chairman":
+              navigate("/Chairmandashboard");
+              break;
+            default:
+              notifyInvalidError("🦄 Invalid login type!");
+          }
+        } else {
+          notifyInvalidError("🦄 Invalid credentials or unexpected response.");
+        }
+      } catch (error) {
+        console.error("API Request Error:", error);
+        notifyInvalidError("🦄 Login failed. Try again later!");
+      }
+    };
+    
+    
 
   return (
     <div

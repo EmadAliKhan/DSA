@@ -3,6 +3,7 @@ import { DSA } from "../models/DSAAcc&Rej.model.js";
 import { Request } from "../models/SocietyModels/RequestForm.model.js";
 import { ApiError } from "../utils/ApiError.js";
 import { asyncHandler } from "../utils/AsyncHandler.js";
+import { ApiResponse } from "../utils/ApiResponse.js";
 //Society Lead Generate the request
 const SocietyRequest = asyncHandler(async (req, res) => {
   const { SocietyName, LeadName, EventName, Department, EventDate, Location } =
@@ -63,9 +64,16 @@ const ChairmanActionRequest = asyncHandler(async (req, res) => {
     }
     // finding the data from table
     const findRequest = await Request.findOne({ _id: id });
+    console.log(findRequest);
+
     //sending data to the Accepted Reservation
     const sendData = await Data.create({
-      RequestData: findRequest,
+      SocietyName: findRequest.SocietyName,
+      LeadName: findRequest.LeadName,
+      Department: findRequest.Department,
+      EventName: findRequest.EventName,
+      EventDate: findRequest.EventDate,
+      Location: findRequest.Location,
       status: status,
     });
     //now delete from Table
@@ -83,6 +91,8 @@ const ChairmanActionRequest = asyncHandler(async (req, res) => {
     throw new ApiError(500, error);
   }
 });
+
+
 //Action data will be get on the chairman detail page and DSA request Page
 const GetChairmanActionRequest = asyncHandler(async (req, res) => {
   try {
@@ -107,10 +117,22 @@ const DSAActionRequest = asyncHandler(async (req, res) => {
       throw new ApiError(400, "Id Not found... ...");
     }
     // finding the data from table
-    const findRequest = await Data.findOne({ _id: id });
+    // const findRequest = await Data.findOne({ RequestData: id });
+    // if (!findRequest) {
+    //   throw new ApiError(400, "Request not found in Data table.");
+    // }
+    // finding the data from table
+    const findRequest = await Request.findOne({ _id: id });
+    console.log(findRequest);
+
     //sending data to the Accepted Reservation
-    const sendData = await DSA.create({
-      CharimanData: findRequest,
+    const sendData = await Data.create({
+      SocietyName: findRequest.SocietyName,
+      LeadName: findRequest.LeadName,
+      Department: findRequest.Department,
+      EventName: findRequest.EventName,
+      EventDate: findRequest.EventDate,
+      Location: findRequest.Location,
       status: status,
     });
     return res

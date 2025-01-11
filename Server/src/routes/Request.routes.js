@@ -10,10 +10,10 @@ import {
 
 const router = Router();
 router.route("/request").post(SocietyRequest);
-router.route("/getRequest").post(GetSocietyRequest);
-router.route("/actionRequest").post(ChairmanActionRequest);
+router.route("/getRequest").get(GetSocietyRequest);
+router.route("/actionRequest/:id").post(ChairmanActionRequest);
 router.route("/getActionRequest").post(GetChairmanActionRequest);
-router.route("/DSAAction").post(DSAActionRequest);
+router.route("/DSAAction/:id").post(DSAActionRequest);
 router.route("/getDSAAction").post(GetDSAActionRequest);
 
 export default router;

@@ -8,7 +8,7 @@ import PersonAddAlt1Icon from "@mui/icons-material/PersonAddAlt1";
 import PublishIcon from "@mui/icons-material/Publish";
 import DoneOutlineIcon from "@mui/icons-material/DoneOutline";
 import { useForm } from "react-hook-form";
-// import axios from "axios";
+import axios from "axios";
 // import { BASE_URL } from "../Api";
 import { useNavigate } from "react-router-dom";
 
@@ -36,17 +36,40 @@ const RequestForm = () => {
       theme: "colored",
     });
   //Getting data using react-hook-form
-  const { register, handleSubmit } = useForm();
+  const { register, handleSubmit, setValue, getValues } = useForm();
   const navigate = useNavigate();
   const onSubmitHandler = async (data) => {
-    // console.log("data", data);
+    console.log("Payload Data:", data);
     if (!data) {
       notifyError("🦄 Fill all the fields!");
-    } else if (data.password !== data.ConfirmPassword) {
-      notifyError("🦄 Password and Confirm Password must be same!");
     } else {
-      console.log(data, "final data");
-      notifySuccess("🦄 Your Account created Successfully");
+      try {
+        const response = await axios.post(
+          `http://localhost:5000/api/v1/request`,
+          {
+            SocietyName: data.SocietyName,
+            LeadName: data.LeadName,
+            EventName: data.EventName,
+            EventDate: data.EventDate,
+            Department: data.Department,
+            Location: data.Location,
+          },
+          {
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        );
+
+        if (response?.status === 200) {
+          notifySuccess("🦄 Request submitted successfully!");
+          // navigate("/success-page"); // Redirect to success page if applicable
+        }
+      } catch (error) {
+        console.error(error);
+        const message = error.response?.data?.message || "Submission failed!";
+        notifyError(`🦄 ${message}`);
+      }
     }
   };
   return (
@@ -81,36 +104,31 @@ const RequestForm = () => {
                 <Grid item xs={12} sm={6}>
                   <Autocomplete
                     options={["GDSC", "IEE", "IISE"]}
+                    onChange={(event, value) => {
+                      setValue("SocietyName", value); // Update value on change
+                    }}
+                    onBlur={() => {
+                      const currentValue = getValues("SocietyName");
+                      if (!currentValue) setValue("SocietyName", ""); // Ensure field is not null
+                    }}
                     renderInput={(params) => (
                       <TextField
                         {...params}
                         label="Society Name"
                         variant="outlined"
                         required
-                        InputLabelProps={{
-                          style: { color: "white" }, // Valid RGB values
-                        }}
+                        InputLabelProps={{ style: { color: "white" } }}
                         sx={{
                           "& .MuiOutlinedInput-root": {
                             borderRadius: "20px",
-                            "& fieldset": {
-                              borderColor: " white",
-                            },
-                            "&:hover fieldset": {
-                              borderColor: " white",
-                            },
-                            "&.Mui-focused fieldset": {
-                              borderColor: " white",
-                            },
+                            "& fieldset": { borderColor: "white" },
+                            "&:hover fieldset": { borderColor: "white" },
+                            "&.Mui-focused fieldset": { borderColor: "white" },
                           },
                           input: { color: "white" },
                         }}
                       />
                     )}
-                    onChange={(event, value) => {
-                      // Handle change and register the selected value
-                      register("SocietyName").onChange({ target: { value } });
-                    }}
                   />
                 </Grid>
 
@@ -119,7 +137,7 @@ const RequestForm = () => {
                   <TextField
                     required
                     label="Lead Name"
-                    {...register("leadName")}
+                    {...register("LeadName")}
                     placeholder="Lead"
                     variant="outlined"
                     fullWidth
@@ -150,7 +168,7 @@ const RequestForm = () => {
                   <TextField
                     required
                     label="Event Name"
-                    {...register("Event")}
+                    {...register("EventName")}
                     placeholder="Event"
                     variant="outlined"
                     fullWidth
@@ -180,7 +198,7 @@ const RequestForm = () => {
                 <Grid item xs={12} sm={6}>
                   <TextField
                     required
-                    {...register("Date")}
+                    {...register("EventDate")}
                     placeholder="Date"
                     variant="outlined"
                     fullWidth
@@ -207,101 +225,64 @@ const RequestForm = () => {
                 </Grid>
                 {/* Hall */}
                 <Grid item xs={6}>
-                  {/* <TextField
-                    required
-                    label="Hall"
-                    {...register("hall")}
-                    placeholder="hall"
-                    variant="outlined"
-                    fullWidth
-                    type="String"
-                    InputLabelProps={{
-                      style: { color: "white" },
-                    }}
-                    sx={{
-                      "& .MuiOutlinedInput-root": {
-                        borderRadius: "20px",
-                        "& fieldset": {
-                          borderColor: " white",
-                        },
-                        "&:hover fieldset": {
-                          borderColor: " white",
-                        },
-                        "&.Mui-focused fieldset": {
-                          borderColor: " white",
-                        },
-                      },
-                      input: { color: "white" },
-                    }}
-                  /> */}
                   <Autocomplete
                     options={["Auditorium", "Seminar"]}
+                    onChange={(event, value) => {
+                      setValue("Location", value); // Update value on change
+                    }}
+                    onBlur={() => {
+                      const currentValue = getValues("Location");
+                      if (!currentValue) setValue("Location", ""); // Ensure field is not null
+                    }}
                     renderInput={(params) => (
                       <TextField
                         {...params}
                         label="Hall"
                         variant="outlined"
                         required
-                        InputLabelProps={{
-                          style: { color: "white" }, // Valid RGB values
-                        }}
+                        InputLabelProps={{ style: { color: "white" } }}
                         sx={{
                           "& .MuiOutlinedInput-root": {
                             borderRadius: "20px",
-                            "& fieldset": {
-                              borderColor: " white",
-                            },
-                            "&:hover fieldset": {
-                              borderColor: " white",
-                            },
-                            "&.Mui-focused fieldset": {
-                              borderColor: " white",
-                            },
+                            "& fieldset": { borderColor: "white" },
+                            "&:hover fieldset": { borderColor: "white" },
+                            "&.Mui-focused fieldset": { borderColor: "white" },
                           },
                           input: { color: "white" },
                         }}
                       />
                     )}
-                    onChange={(event, value) => {
-                      // Handle change and register the selected value
-                      register("hall").onChange({ target: { value } });
-                    }}
                   />
                 </Grid>
                 {/* Department */}
                 <Grid item xs={6}>
                   <Autocomplete
                     options={["CSE", "EE", "BSCS"]}
+                    onChange={(event, value) => {
+                      setValue("Department", value); // Update value on change
+                    }}
+                    onBlur={() => {
+                      const currentValue = getValues("Department");
+                      if (!currentValue) setValue("Department", ""); // Ensure field is not null
+                    }}
                     renderInput={(params) => (
                       <TextField
                         {...params}
-                        label="department"
+                        label="Department"
                         variant="outlined"
                         required
-                        InputLabelProps={{
-                          style: { color: "white" }, // Valid RGB values
-                        }}
+                        InputLabelProps={{ style: { color: "white" } }}
                         sx={{
                           "& .MuiOutlinedInput-root": {
                             borderRadius: "20px",
-                            "& fieldset": {
-                              borderColor: " white",
-                            },
-                            "&:hover fieldset": {
-                              borderColor: " white",
-                            },
-                            "&.Mui-focused fieldset": {
-                              borderColor: " white",
-                            },
+                            "& fieldset": { borderColor: "white" },
+                            "&:hover fieldset": { borderColor: "white" },
+                            "&.Mui-focused fieldset": { borderColor: "white" },
                           },
                           input: { color: "white" },
                         }}
                       />
                     )}
-                    onChange={(event, value) => {
-                      // Handle change and register the selected value
-                      register("department").onChange({ target: { value } });
-                    }}
                   />
                 </Grid>
 

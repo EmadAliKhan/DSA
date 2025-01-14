@@ -122,11 +122,11 @@ const DSAActionRequest = asyncHandler(async (req, res) => {
     //   throw new ApiError(400, "Request not found in Data table.");
     // }
     // finding the data from table
-    const findRequest = await Request.findOne({ _id: id });
+    const findRequest = await Data.findOne({ _id: id });
     console.log(findRequest);
 
     //sending data to the Accepted Reservation
-    const sendData = await Data.create({
+    const sendData = await DSA.create({
       SocietyName: findRequest.SocietyName,
       LeadName: findRequest.LeadName,
       Department: findRequest.Department,

@@ -1,6 +1,35 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
 
 const RequestDetail = () => {
+  const [requests, setRequests] = useState({
+    accepted: [],
+    rejected: [],
+  });
+
+  useEffect(() => {
+    const fetchRequests = async () => {
+      try {
+        const response = await axios.get("http://localhost:5000/api/v1/getDSAAction");
+        const data = response.data.data;
+
+        // Filter data based on status (accepted or rejected)
+        const acceptedRequests = data.filter(request => request.status === "accepted");
+        const rejectedRequests = data.filter(request => request.status === "rejected");
+
+        // Set the data in state
+        setRequests({
+          accepted: acceptedRequests,
+          rejected: rejectedRequests,
+        });
+      } catch (error) {
+        console.error("Error fetching the requests", error);
+      }
+    };
+
+    fetchRequests();
+  }, []);
+
   return (
     <>
       <div className="container">
@@ -19,12 +48,12 @@ const RequestDetail = () => {
           </div>
           <hr />
 
-          {/* Accepted Order */}
+          {/* Accepted Requests */}
           <div
             className="col-12 col-md-6 mb-4"
             style={{
-              borderRight: "2px solid #ccc", // Vertical line between sections
-              paddingRight: "20px", // Adds space between border and content
+              borderRight: "2px solid #ccc",
+              paddingRight: "20px",
             }}
           >
             <h1 className="jacques-francois-shadow-regular text-success text-center">
@@ -37,7 +66,7 @@ const RequestDetail = () => {
                 maxHeight: "350px",
                 overflowY: "auto",
               }}
-              className="table-responsive" // Responsive table wrapper
+              className="table-responsive"
             >
               <table className="table table-success table-striped table-bordered border-success">
                 <thead>
@@ -51,20 +80,22 @@ const RequestDetail = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  <tr>
-                    <td>1</td>
-                    <td>GDSC</td>
-                    <td>Huraira Shahid</td>
-                    <td>WorkShop</td>
-                    <td>2-3-2024</td>
-                    <td>Seminar</td>
-                  </tr>
+                  {requests.accepted.map((request, index) => (
+                    <tr key={request._id}>
+                      <td>{index + 1}</td>
+                      <td>{request.SocietyName}</td>
+                      <td>{request.LeadName}</td>
+                      <td>{request.Location}</td>
+                      <td>{new Date(request.EventDate).toLocaleDateString()}</td>
+                      <td>{request.Department}</td>
+                    </tr>
+                  ))}
                 </tbody>
               </table>
             </div>
           </div>
 
-          {/* Rejected Order */}
+          {/* Rejected Requests */}
           <div className="col-12 col-md-6 mb-4">
             <h1 className="jacques-francois-shadow-regular text-danger text-center">
               Rejected Requests
@@ -76,7 +107,7 @@ const RequestDetail = () => {
                 maxHeight: "350px",
                 overflowY: "auto",
               }}
-              className="table-responsive" // Responsive table wrapper
+              className="table-responsive"
             >
               <table className="table table-danger table-striped table-bordered border-danger">
                 <thead>
@@ -90,14 +121,16 @@ const RequestDetail = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  <tr>
-                    <td>1</td>
-                    <td>GDSC</td>
-                    <td>Huraira Shahid</td>
-                    <td>WorkShop</td>
-                    <td>2-3-2024</td>
-                    <td>Seminar</td>
-                  </tr>
+                  {requests.rejected.map((request, index) => (
+                    <tr key={request._id}>
+                      <td>{index + 1}</td>
+                      <td>{request.SocietyName}</td>
+                      <td>{request.LeadName}</td>
+                      <td>{request.Location}</td>
+                      <td>{new Date(request.EventDate).toLocaleDateString()}</td>
+                      <td>{request.Department}</td>
+                    </tr>
+                  ))}
                 </tbody>
               </table>
             </div>

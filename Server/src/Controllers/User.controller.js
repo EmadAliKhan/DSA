@@ -5,7 +5,7 @@ import { asyncHandler } from "../utils/AsyncHandler.js";
 import jwt from "jsonwebtoken";
 const RegisterUser = asyncHandler(async (req, res) => {
   // Getting user detail from frontend
-  const { fullName, email, password, Department } = req.body;
+  const { fullName, email, password, department, type } = req.body;
 
   //checking if user already exists
   const existedUser = await User.findOne({
@@ -24,11 +24,12 @@ const RegisterUser = asyncHandler(async (req, res) => {
     fullName,
     email,
     password,
-    Department,
+    department,
+    type,
   });
 
   const token = await jwt.sign(
-    { id: user._id, firstName, lastName, email, Department },
+    { id: user._id, firstName, lastName, email, department, type },
     "jsonwebtokentkey",
     {
       expiresIn: "30d",
@@ -58,9 +59,9 @@ const RegisterUser = asyncHandler(async (req, res) => {
 
 const LoginUser = asyncHandler(async (req, res) => {
   // getting data from frontend
-  const { email, password, Department } = req.body;
+  const { email, password, department } = req.body;
   //   checking validation
-  if (!email || !password || Department) {
+  if (!email || !password || !department) {
     throw new ApiError(400, "All fields are required...!");
   }
   //Checking for existed  user

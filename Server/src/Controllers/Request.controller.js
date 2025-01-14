@@ -3,6 +3,7 @@ import { DSA } from "../models/DSAAcc&Rej.model.js";
 import { Request } from "../models/SocietyModels/RequestForm.model.js";
 import { ApiError } from "../utils/ApiError.js";
 import { asyncHandler } from "../utils/AsyncHandler.js";
+import { ApiResponse } from "../utils/ApiResponse.js";
 //Society Lead Generate the request
 const SocietyRequest = asyncHandler(async (req, res) => {
   const { SocietyName, LeadName, EventName, Department, EventDate, Location } =
@@ -54,7 +55,7 @@ const GetSocietyRequest = asyncHandler(async (req, res) => {
 });
 // Chairman perform the action like (accepted/rejected)
 const ChairmanActionRequest = asyncHandler(async (req, res) => {
-  const { status } = req.body;
+  const { status } = req.body; // accepted or rejected
   const { id } = req.params;
 
   try {
@@ -90,16 +91,17 @@ const ChairmanActionRequest = asyncHandler(async (req, res) => {
     throw new ApiError(500, error);
   }
 });
+
 //Action data will be get on the chairman detail page and DSA request Page
 const GetChairmanActionRequest = asyncHandler(async (req, res) => {
   try {
     const getActionReq = await Data.find({});
     if (!getActionReq) {
-      throw new ApiError(400, "Checkout data not Found");
+      throw new ApiError(400, "Chairman Action data not Found");
     }
     return res
       .status(200)
-      .json(new ApiResponse(200, getActionReq, "Request placed Successfully"));
+      .json(new ApiResponse(200, getActionReq, "Action get Successfully"));
   } catch (error) {
     throw new ApiError(500, "Server error, please try again later");
   }
@@ -115,6 +117,8 @@ const DSAActionRequest = asyncHandler(async (req, res) => {
     }
     // finding the data from table
     const findRequest = await Data.findOne({ _id: id });
+    console.log(findRequest);
+
     //sending data to the Accepted Reservation
     const sendData = await DSA.create({
       SocietyName: findRequest.SocietyName,

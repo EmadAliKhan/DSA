@@ -5,6 +5,7 @@ import Welcome from "../Components/Welcome";
 import Form from "../Components/DSA/Form";
 import SocietyDashboard from "../Components/DSA/SOCIETY/Dashboard/SocietyDashboard";
 import ChairmanDashboard from "../Components/CHAIRMAN/ChairmanDashboard";
+import WelcomePage from "../Components/WelcomePage";
 
 const AppRoute = () => {
   return (
@@ -14,6 +15,10 @@ const AppRoute = () => {
           <Route index element={<Welcome />} />
           <Route path="/form" element={<Form />} />
           <Route path="/DSAdashboard/*" element={<DSADashboard />} />
+          <Route
+            path="/Societydashboard/welcomePage"
+            element={<WelcomePage />}
+          />
           <Route path="/Societydashboard/*" element={<SocietyDashboard />} />
           <Route path="/Chairmandashboard/*" element={<ChairmanDashboard />} />
         </Routes>

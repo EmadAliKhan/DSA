@@ -6,6 +6,8 @@ import { Autocomplete, Card, CardContent } from "@mui/material";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import LoginIcon from "@mui/icons-material/Login";
+import axios from "axios";
+import WelcomePage from "../WelcomePage";
 
 export default function Form() {
   const location = useLocation();
@@ -39,23 +41,59 @@ export default function Form() {
       progress: undefined,
       theme: "dark",
     });
-
   const handleSubmit = async (event) => {
     event.preventDefault();
-    if (!email || !password || !department) {
-      notifyFieldsError("🦄 Please fill all The fields!");
-    } else {
-      console.log(email, password, department);
 
-      // const Data = {
-      //   email: email,
-      //   password: password,
-      // };
-      // if (email === "DSA@gmail.com" && password === "12345678") {
-      //   navigate("/DSAdashboard");
-      // } else if (email === "Society@gmail.com" && password === "12345678") {
-      //   navigate("/Societydashboard");
-      // }
+    if (!email || !password || !department) {
+      notifyFieldsError("🦄 Please fill all the fields!");
+      return;
+    }
+
+    try {
+      const response = await fetch("http://localhost:5000/api/v1/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email,
+          password,
+          department, // Ensure capitalization matches the backend key
+        }),
+      });
+
+      if (!response.ok) {
+        const errorResponse = await response.json();
+        console.error("Error Response:", errorResponse); // Log error for debugging
+        notifyInvalidError(errorResponse.message || "Login failed!");
+        return;
+      }
+
+      const data = await response.json();
+      console.log("Login Successful, Response Data:", data); // Debugging
+
+      if (data.success && data.data) {
+        // Redirect based on type passed through `location.state`
+        <WelcomePage data={data.data} />;
+        switch (type) {
+          case "Society":
+            navigate("/Societydashboard/welcomePage");
+            break;
+          case "DSA":
+            navigate("/DSAdashboard");
+            break;
+          case "Chairman":
+            navigate("/Chairmandashboard");
+            break;
+          default:
+            notifyInvalidError("🦄 Invalid login type!");
+        }
+      } else {
+        notifyInvalidError("🦄 Invalid credentials or unexpected response.");
+      }
+    } catch (error) {
+      console.error("API Request Error:", error);
+      notifyInvalidError("🦄 Login failed. Try again later!");
     }
   };
 

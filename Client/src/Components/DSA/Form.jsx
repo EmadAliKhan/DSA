@@ -74,15 +74,18 @@ export default function Form() {
 
       if (data.success && data.data) {
         // Redirect based on type passed through `location.state`
-        <WelcomePage data={data.data} />;
+        // <WelcomePage data={data.data} />;
         switch (type) {
           case "Society":
+            localStorage.setItem("Society", data.email); // check data.email
             navigate("/Societydashboard/welcomePage");
             break;
           case "DSA":
+            localStorage.setItem("DSA", data.email); // check data.email
             navigate("/DSAdashboard");
             break;
           case "Chairman":
+            localStorage.setItem("Chairman", data.email); // check data.email
             navigate("/Chairmandashboard");
             break;
           default:

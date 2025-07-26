@@ -12,8 +12,8 @@ const router = Router();
 router.route("/request").post(SocietyRequest);
 router.route("/getRequest").get(GetSocietyRequest);
 router.route("/actionRequest/:id").post(ChairmanActionRequest);
-router.route("/getActionRequest").post(GetChairmanActionRequest);
+router.route("/getActionRequest").get(GetChairmanActionRequest);
 router.route("/DSAAction/:id").post(DSAActionRequest);
-router.route("/getDSAAction").post(GetDSAActionRequest);
+router.route("/getDSAAction").get(GetDSAActionRequest);
 
 export default router;

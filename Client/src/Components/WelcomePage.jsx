@@ -25,10 +25,10 @@ const WelcomePage = ({ data }) => {
       }}
     >
       <Typography variant="h2" component="h1" gutterBottom>
-        Welcome to the Admin Portal
+        Welcome to the Dashboard
       </Typography>
       <Typography variant="h5" component="p">
-        Manage your restaurant efficiently and effectively.
+        Manage your Data efficiently and effectively.
       </Typography>
       <Typography variant="h5" component="p">
         You will redirecting to the dashboard in a few seconds...

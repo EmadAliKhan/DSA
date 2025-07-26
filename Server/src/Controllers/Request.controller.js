@@ -116,6 +116,11 @@ const DSAActionRequest = asyncHandler(async (req, res) => {
       throw new ApiError(400, "Id Not found... ...");
     }
     // finding the data from table
+    // const findRequest = await Data.findOne({ RequestData: id });
+    // if (!findRequest) {
+    //   throw new ApiError(400, "Request not found in Data table.");
+    // }
+    // finding the data from table
     const findRequest = await Data.findOne({ _id: id });
     console.log(findRequest);
 
